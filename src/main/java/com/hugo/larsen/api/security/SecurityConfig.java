@@ -32,7 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(NoOpPasswordEncoder.getInstance());
+		authenticationManagerBuilder
+			.userDetailsService(userDetailsService)
+			.passwordEncoder(NoOpPasswordEncoder.getInstance());
 	}
 
 	@Override
@@ -51,7 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// set permissions on endpoints
 		http.authorizeRequests()
 			.antMatchers("/api/public/**").permitAll()
-			.antMatchers("/api/auth/**").authenticated();
+			.antMatchers("/api/auth/**").authenticated()
+			.antMatchers("/**").denyAll();
 
 		// add JWT token filter
 		http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
