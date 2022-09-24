@@ -1,6 +1,5 @@
 package com.hugo.larsen.api.security.jwt;
 
-import java.util.Base64;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -8,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtils {
@@ -24,7 +23,8 @@ public class JwtUtils {
 			.setSubject(userdetails.getUsername())
 			.setIssuedAt(new Date(currentTimeMillis))
 			.setExpiration(new Date(currentTimeMillis + expirationMs))
-			.signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secret.getBytes())).compact();
+			.signWith(Keys.hmacShaKeyFor(secret.getBytes()))
+			.compact();
 	}
 
 	public boolean validate(String token) {
