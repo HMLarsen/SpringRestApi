@@ -1,0 +1,13 @@
+package com.hugo.larsen.api.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.hugo.larsen.api.domain.model.Score;
+
+public interface ScoreRepository extends JpaRepository<Score, Long> {
+
+	@Query(value = "SELECT * FROM score WHERE ?1 BETWEEN inicial AND final", nativeQuery = true)
+	Score findScoreBetween(short score);
+
+}

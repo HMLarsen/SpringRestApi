@@ -1,5 +1,7 @@
 package com.hugo.larsen.api.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,10 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hugo.larsen.api.domain.dto.AuthRequest;
-import com.hugo.larsen.api.domain.dto.UserView;
 import com.hugo.larsen.api.security.jwt.JwtUtils;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(path = "api/public")
@@ -31,15 +30,14 @@ public class AuthController {
 	private JwtUtils jwtTokenUtil;
 
 	@PostMapping("login")
-	public ResponseEntity<UserView> login(@RequestBody @Valid AuthRequest request) {
+	public ResponseEntity<Void> login(@RequestBody @Valid AuthRequest request) {
 		try {
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(request.username(), request.password());
 			Authentication authenticate = authenticationManager.authenticate(authentication);
 			User user = (User) authenticate.getPrincipal();
-			UserView userView = new UserView(user.getUsername(), user.getUsername());
-			return ResponseEntity.ok()
+			return ResponseEntity.noContent()
 				.header(HttpHeaders.AUTHORIZATION, jwtTokenUtil.generateAccessToken(user))
-				.body(userView);
+				.build();
 		} catch (BadCredentialsException ex) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}

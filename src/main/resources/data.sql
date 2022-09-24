@@ -1,0 +1,1 @@
+INSERT INTO usuario (id, usuario, senha) VALUES (1, 'teste', '$2a$12$By2B1QsabHiKcFKdHIss9.R4uegr9VNPn.V1cGvfgUhfPNJheTN3G'); // 12345

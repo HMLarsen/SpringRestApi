@@ -10,7 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.hugo.larsen.api.security.jwt.JwtTokenFilter;
@@ -30,17 +31,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return super.authenticationManagerBean();
 	}
 
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
 	@Override
 	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 		authenticationManagerBuilder
 			.userDetailsService(userDetailsService)
-			.passwordEncoder(NoOpPasswordEncoder.getInstance());
+			.passwordEncoder(passwordEncoder());
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// enable CORS and disable CSRF
 		http = http.cors().and().csrf().disable();
+		http.headers().frameOptions().disable();
 
 		// set session management to stateless
 		http = http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
@@ -52,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// set permissions on endpoints
 		http.authorizeRequests()
+			.antMatchers("/h2-console/**").permitAll()
 			.antMatchers("/api/public/**").permitAll()
 			.antMatchers("/api/auth/**").authenticated()
 			.anyRequest().denyAll();
