@@ -125,8 +125,14 @@
 							}
 						}
 					},
-					"201": {
-						"description": "Pessoa não encontrada"
+					"204": {
+						"description": "Nenhuma pessoa encontrada"
+					},
+					"401": {
+						"description": "Usuário não autorizado"
+					},
+					"500": {
+						"description": "Erro inesperado"
 					}
 				},
 				"security": [
@@ -236,8 +242,8 @@
 							}
 						}
 					},
-					"201": {
-						"description": "Pessoa não encontrada"
+					"204": {
+						"description": "Nenhuma pessoa encontrada"
 					}
 				},
 				"security": [
