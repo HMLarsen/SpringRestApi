@@ -13,12 +13,12 @@ public class ScoreService {
 	@Autowired
 	ScoreRepository scoreRepository;
 
-	public void save(ScoreRequest request) {
+	public Score save(ScoreRequest request) {
 		Score score = new Score();
 		score.setDescricao(request.scoreDescricao());
 		score.setInicialScore(request.inicialScore());
 		score.setFinalScore(request.finalScore());
-		scoreRepository.save(score);
+		return scoreRepository.save(score);
 	}
 
 }

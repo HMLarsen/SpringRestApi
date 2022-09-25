@@ -13,7 +13,7 @@ import com.hugo.larsen.api.domain.dto.ScoreRequest;
 import com.hugo.larsen.api.services.ScoreService;
 
 @RestController
-@RequestMapping(path = "api/auth/score")
+@RequestMapping(path = "auth/score")
 public class ScoreController {
 
 	@Autowired

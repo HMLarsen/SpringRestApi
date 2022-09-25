@@ -45,27 +45,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// enable CORS and disable CSRF
-		http = http.cors().and().csrf().disable();
-		http.headers().frameOptions().disable();
-
-		// set session management to stateless
-		http = http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
-
-		// set unauthorized requests exception handler
-		http = http.exceptionHandling().authenticationEntryPoint((request, response, ex) -> {
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
-		}).and();
-
-		// set permissions on endpoints
-		http.authorizeRequests()
-			.antMatchers("/h2-console/**").permitAll()
-			.antMatchers("/api/public/**").permitAll()
-			.antMatchers("/api/auth/**").authenticated()
-			.anyRequest().denyAll();
-
-		// add JWT token filter
-		http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+		http.cors().and()
+			.csrf().disable()
+			.headers().frameOptions().disable().and()
+			// gerenciamento stateless da sessão
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+			// exceção padrão para rotas não autorizadas
+			.exceptionHandling().authenticationEntryPoint((request, response, ex) -> {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
+			}).and()
+			// endpoints
+			.authorizeRequests()
+			.antMatchers("/public/**").permitAll()
+			.antMatchers("/auth/**").authenticated().and()
+			// filtro JWT
+			.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
 }

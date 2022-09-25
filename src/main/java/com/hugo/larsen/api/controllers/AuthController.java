@@ -20,7 +20,7 @@ import com.hugo.larsen.api.domain.dto.AuthRequest;
 import com.hugo.larsen.api.security.jwt.JwtUtils;
 
 @RestController
-@RequestMapping(path = "api/public")
+@RequestMapping(path = "public")
 public class AuthController {
 
 	@Autowired
@@ -32,7 +32,7 @@ public class AuthController {
 	@PostMapping("login")
 	public ResponseEntity<Void> login(@RequestBody @Valid AuthRequest request) {
 		try {
-			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(request.username(), request.password());
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(request.usuario(), request.senha());
 			Authentication authenticate = authenticationManager.authenticate(authentication);
 			User user = (User) authenticate.getPrincipal();
 			return ResponseEntity.noContent()

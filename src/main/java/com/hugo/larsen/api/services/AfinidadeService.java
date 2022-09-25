@@ -13,11 +13,11 @@ public class AfinidadeService {
 	@Autowired
 	AfinidadeRepository afinidadeRepository;
 
-	public void save(AfinidadeRequest request) {
+	public Afinidade save(AfinidadeRequest request) {
 		Afinidade afinidade = new Afinidade();
 		afinidade.setRegiao(request.regiao());
 		afinidade.setEstados(request.estados());
-		afinidadeRepository.save(afinidade);
+		return afinidadeRepository.save(afinidade);
 	}
 
 }

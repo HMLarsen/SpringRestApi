@@ -13,7 +13,7 @@ import com.hugo.larsen.api.domain.dto.AfinidadeRequest;
 import com.hugo.larsen.api.services.AfinidadeService;
 
 @RestController
-@RequestMapping(path = "api/auth/afinidade")
+@RequestMapping(path = "auth/afinidade")
 public class AfinidadeController {
 
 	@Autowired

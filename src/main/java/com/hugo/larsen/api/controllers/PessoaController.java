@@ -21,7 +21,7 @@ import com.hugo.larsen.api.domain.model.Pessoa;
 import com.hugo.larsen.api.services.PessoaService;
 
 @RestController
-@RequestMapping(path = "api/auth/pessoa")
+@RequestMapping(path = "auth/pessoa")
 public class PessoaController {
 
 	@Autowired

@@ -1,0 +1,464 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+		"title": "Spring REST API",
+		"description": "Aplicação Spring REST API simples com autenticação JWT.",
+		"version": "v1",
+		"contact": {
+			"email": "hugomarcel91@gmail.com"
+		},
+		"license": {
+			"name": "MIT"
+		}
+	},
+	"servers": [
+		{
+			"url": "http://localhost:8080",
+			"description": "URL dos serviços"
+		}
+	],
+	"tags": [
+		{
+			"name": "public",
+			"description": "Rotas públicas"
+		},
+		{
+			"name": "score",
+			"description": "API de score"
+		},
+		{
+			"name": "pessoa",
+			"description": "API de pessoa"
+		},
+		{
+			"name": "afinidade",
+			"description": "API de afinidade"
+		}
+	],
+	"paths": {
+		"/public/login": {
+			"post": {
+				"tags": [
+					"public"
+				],
+				"summary": "Autenticação do usuário",
+				"description": "Informe o usuário (teste) e a senha (12345) para autenticação",
+				"operationId": "login",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AuthRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"204": {
+						"description": "Sucesso na autenticação, verifique o cabeçalho \"Authorization\" contendo o JWT"
+					},
+					"401": {
+						"description": "Usuário ou senha incorretos"
+					},
+					"500": {
+						"description": "Erro inesperado"
+					}
+				}
+			}
+		},
+		"/auth/score": {
+			"post": {
+				"tags": [
+					"score"
+				],
+				"summary": "Criação de um score",
+				"description": "O score representa a valorização de pontos de uma pessoa",
+				"operationId": "create",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ScoreRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Score criado com sucesso"
+					},
+					"401": {
+						"description": "Usuário não autorizado"
+					},
+					"500": {
+						"description": "Erro inesperado"
+					}
+				},
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				]
+			}
+		},
+		"/auth/pessoa": {
+			"get": {
+				"tags": [
+					"pessoa"
+				],
+				"summary": "Consulta de pessoas",
+				"description": "Retorna todas as pessoas",
+				"operationId": "get",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PessoaView"
+									}
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "Pessoa não encontrada"
+					}
+				},
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				]
+			},
+			"post": {
+				"tags": [
+					"pessoa"
+				],
+				"summary": "Criação de uma pessoa",
+				"description": "Inclui uma pessoa com todas as suas informações e inclusive seu score",
+				"operationId": "create",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PessoaRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Pessoa criada com sucesso"
+					},
+					"401": {
+						"description": "Usuário não autorizado"
+					},
+					"500": {
+						"description": "Erro inesperado"
+					}
+				},
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				]
+			}
+		},
+		"/auth/afinidade": {
+			"post": {
+				"tags": [
+					"afinidade"
+				],
+				"summary": "Criação de uma afinidade",
+				"description": "A afinidade representa uma região com seus estados relacionados",
+				"operationId": "create",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AfinidadeRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Afinidade criada com sucesso"
+					},
+					"401": {
+						"description": "Usuário não autorizado"
+					},
+					"500": {
+						"description": "Erro inesperado"
+					}
+				},
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				]
+			}
+		},
+		"/auth/pessoa/{id}": {
+			"get": {
+				"tags": [
+					"pessoa"
+				],
+				"summary": "Consulta de uma pessoa",
+				"description": "Retorna a pessoa relacionada ao ID repassado",
+				"operationId": "getById",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int64"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PessoaView"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "Pessoa não encontrada"
+					}
+				},
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				]
+			}
+		}
+	},
+	"components": {
+		"securitySchemes": {
+			"bearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		},
+		"schemas": {
+			"AuthRequest": {
+				"required": [
+					"senha",
+					"usuario"
+				],
+				"type": "object",
+				"properties": {
+					"usuario": {
+						"type": "string"
+					},
+					"senha": {
+						"type": "string"
+					}
+				}
+			},
+			"ScoreRequest": {
+				"required": [
+					"final",
+					"inicial",
+					"scoreDescricao"
+				],
+				"type": "object",
+				"properties": {
+					"inicial": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"final": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"scoreDescricao": {
+						"type": "string"
+					}
+				}
+			},
+			"PessoaRequest": {
+				"required": [
+					"cidade",
+					"estado",
+					"idade",
+					"nome",
+					"regiao",
+					"score",
+					"telefone"
+				],
+				"type": "object",
+				"properties": {
+					"nome": {
+						"type": "string"
+					},
+					"telefone": {
+						"type": "string"
+					},
+					"idade": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"cidade": {
+						"type": "string"
+					},
+					"estado": {
+						"type": "string",
+						"enum": [
+							"AM",
+							"AL",
+							"AC",
+							"AP",
+							"BA",
+							"PA",
+							"MT",
+							"MG",
+							"MS",
+							"GO",
+							"MA",
+							"RS",
+							"TO",
+							"PI",
+							"SP",
+							"RO",
+							"RR",
+							"PR",
+							"CE",
+							"PE",
+							"SC",
+							"PB",
+							"RN",
+							"ES",
+							"RJ",
+							"SE",
+							"DF"
+						]
+					},
+					"score": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"regiao": {
+						"type": "string"
+					}
+				}
+			},
+			"AfinidadeRequest": {
+				"required": [
+					"estados",
+					"regiao"
+				],
+				"type": "object",
+				"properties": {
+					"regiao": {
+						"type": "string"
+					},
+					"estados": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": [
+								"AM",
+								"AL",
+								"AC",
+								"AP",
+								"BA",
+								"PA",
+								"MT",
+								"MG",
+								"MS",
+								"GO",
+								"MA",
+								"RS",
+								"TO",
+								"PI",
+								"SP",
+								"RO",
+								"RR",
+								"PR",
+								"CE",
+								"PE",
+								"SC",
+								"PB",
+								"RN",
+								"ES",
+								"RJ",
+								"SE",
+								"DF"
+							]
+						}
+					}
+				}
+			},
+			"PessoaView": {
+				"type": "object",
+				"properties": {
+					"nome": {
+						"type": "string"
+					},
+					"telefone": {
+						"type": "string"
+					},
+					"idade": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"scoreDescricao": {
+						"type": "string"
+					},
+					"estados": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"enum": [
+								"AM",
+								"AL",
+								"AC",
+								"AP",
+								"BA",
+								"PA",
+								"MT",
+								"MG",
+								"MS",
+								"GO",
+								"MA",
+								"RS",
+								"TO",
+								"PI",
+								"SP",
+								"RO",
+								"RR",
+								"PR",
+								"CE",
+								"PE",
+								"SC",
+								"PB",
+								"RN",
+								"ES",
+								"RJ",
+								"SE",
+								"DF"
+							]
+						}
+					}
+				}
+			}
+		}
+	}
+}

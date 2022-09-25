@@ -30,7 +30,7 @@ public class PessoaService {
 	@Autowired
 	ScoreRepository scoreRepository;
 
-	public void save(PessoaRequest request) {
+	public Pessoa save(PessoaRequest request) {
 		Pessoa pessoa = new Pessoa();
 		pessoa.setNome(request.nome());
 		pessoa.setTelefone(request.telefone());
@@ -40,7 +40,7 @@ public class PessoaService {
 		pessoa.setScore(request.score());
 		pessoa.setRegiao(request.regiao());
 		pessoa.setDataInclusao(new Date());
-		pessoaRepository.save(pessoa);
+		return pessoaRepository.save(pessoa);
 	}
 
 	public Optional<Pessoa> getById(long id) {
