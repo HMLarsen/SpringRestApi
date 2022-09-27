@@ -79,10 +79,10 @@ public class PessoaService {
 	 * @return a pessoa que o cliente irá ver
 	 */
 	public PessoaView toView(Pessoa pessoa) {
-		Afinidade afinidade = afinidadeRepository.findByRegiao(pessoa.getRegiao());
-		List<EstadosEnum> estados = afinidade != null ? afinidade.getEstados() : null;
-		Score score = scoreRepository.findScoreBetween(pessoa.getScore());
-		String scoreDescricao = score != null ? score.getDescricao() : null;
+		Optional<Afinidade> afinidadeOpt = afinidadeRepository.findByRegiao(pessoa.getRegiao());
+		List<EstadosEnum> estados = afinidadeOpt.map(Afinidade::getEstados).orElse(null);
+		Optional<Score> scoreOpt = scoreRepository.findScoreBetween(pessoa.getScore());
+		String scoreDescricao = scoreOpt.map(Score::getDescricao).orElse(null);
 		return new PessoaView(pessoa.getNome(), pessoa.getTelefone(), pessoa.getIdade(), scoreDescricao, estados);
 	}
 
@@ -95,5 +95,5 @@ public class PessoaService {
 	public List<PessoaView> toViewAll(List<Pessoa> pessoas) {
 		return pessoas.stream().map(this::toView).collect(Collectors.toList());
 	}
-
+	
 }
