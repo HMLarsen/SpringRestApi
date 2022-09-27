@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 import com.hugo.larsen.api.domain.model.Usuario;
 import com.hugo.larsen.api.repository.UserRepository;
 
+/**
+ * Implementação de autenticação do usuário.
+ * 
+ * @author hugo
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 	

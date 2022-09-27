@@ -12,6 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Representa uma afinidade.
+ * 
+ * @author hugo
+ */
 @Entity
 @Table(name = "afinidade")
 public class Afinidade {

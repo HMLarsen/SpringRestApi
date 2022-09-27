@@ -16,6 +16,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.hugo.larsen.api.security.jwt.JwtTokenFilter;
 
+/**
+ * Configuração global de segurança da aplicação.
+ * 
+ * @author hugo
+ */
 @EnableWebSecurity
 public class SecurityConfig {
 	

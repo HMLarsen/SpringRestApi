@@ -5,6 +5,11 @@ import javax.validation.constraints.NotNull;
 
 import com.hugo.larsen.api.domain.model.EstadosEnum;
 
+/**
+ * Representa uma requisição de pessoa.
+ * 
+ * @author hugo
+ */
 public record PessoaRequest(
 	@NotBlank String nome,
 	@NotBlank String telefone,

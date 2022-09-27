@@ -19,6 +19,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.hugo.larsen.api.security.UserDetailsServiceImpl;
 
+/**
+ * Filtro principal de verificação da autenticação do usuário com JWT.
+ * 
+ * @author hugo
+ */
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
@@ -30,25 +35,26 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-		// validate header
+		// validar o header
 		final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if (header == null || header.isEmpty() || !header.startsWith("Bearer ")) {
 			chain.doFilter(request, response);
 			return;
 		}
-		// get jwt
+		// validar o JWT do header
 		final String token = header.split(" ")[1].trim();
 		if (!jwtUtils.validate(token)) {
 			chain.doFilter(request, response);
 			return;
 		}
-		// get user identity and set it on the spring security context
+		// autenticar o usuário com a senha
 		UserDetails userDetails = userServiceImpl.loadUserByUsername(jwtUtils.getUsername(token));
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 			userDetails,
 			null,
 			userDetails == null ? List.of() : userDetails.getAuthorities()
 		);
+		// setar o usuário no contexto de segurança do spring
 		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		chain.doFilter(request, response);

@@ -7,6 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Representa um score.
+ * 
+ * @author hugo
+ */
 @Entity
 @Table(name = "score")
 public class Score {

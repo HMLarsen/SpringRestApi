@@ -19,6 +19,14 @@ import com.hugo.larsen.api.domain.model.Score;
 import com.hugo.larsen.api.repository.ScoreRepository;
 import com.hugo.larsen.api.services.ScoreService;
 
+/**
+ * Teste para score.
+ * 
+ * @see ScoreRepository
+ * @see ScoreService
+ * @see Score
+ * @author hugoo
+ */
 @RunWith(MockitoJUnitRunner.class)
 @ExtendWith(MockitoExtension.class)
 public class ScoreTest {
@@ -34,20 +42,16 @@ public class ScoreTest {
 		MockitoAnnotations.openMocks(this);
 	}
 
+	/**
+	 * Testa se a criação de um score pelo serviço é executada corretamente.
+	 */
 	@Test
 	public void shouldCreateScore() {
 		String descricao = "Insuficiente";
 		short inicialScore = (short) 0;
 		short finalScore = (short) 200;
 
-		// entidade
-		Score score = new Score();
-		score.setDescricao(descricao);
-		score.setInicialScore(inicialScore);
-		score.setFinalScore(finalScore);
-		when(mockScoreRepository.save(any())).thenReturn(score);
-
-		// save
+		when(mockScoreRepository.save(any(Score.class))).thenAnswer(i -> i.getArguments()[0]);
 		ScoreRequest request = new ScoreRequest(descricao, inicialScore, finalScore);
 		Score result = scoreService.save(request);
 

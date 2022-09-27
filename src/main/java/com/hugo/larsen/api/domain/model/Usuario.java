@@ -7,6 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Representa um usuário.
+ * 
+ * @author hugo
+ */
 @Entity
 @Table(name = "usuario")
 public class Usuario {

@@ -1,2 +1,2 @@
 # SpringRestApi
-Spring RESTApi with JWT and H2.
+Spring REST API com autenticação JWT e banco de dados H2.

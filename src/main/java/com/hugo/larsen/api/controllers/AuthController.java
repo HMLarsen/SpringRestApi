@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hugo.larsen.api.domain.dto.AuthRequest;
 import com.hugo.larsen.api.security.jwt.JwtUtils;
 
+/**
+ * Endpoint para serviços de autenticação.
+ * 
+ * @author hugo
+ */
 @RestController
 @RequestMapping(path = "public")
 public class AuthController {
@@ -29,6 +34,12 @@ public class AuthController {
 	@Autowired
 	private JwtUtils jwtTokenUtil;
 
+	/**
+	 * Realiza a autenticação de um usuário.
+	 * 
+	 * @param request informações da autenticação
+	 * @return código {@link HttpStatus#NO_CONTENT} contendo o JWT no header da resposta
+	 */
 	@PostMapping("login")
 	public ResponseEntity<Void> login(@RequestBody @Valid AuthRequest request) {
 		try {

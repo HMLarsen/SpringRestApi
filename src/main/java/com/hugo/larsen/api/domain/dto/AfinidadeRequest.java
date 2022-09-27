@@ -7,6 +7,11 @@ import javax.validation.constraints.NotEmpty;
 
 import com.hugo.larsen.api.domain.model.EstadosEnum;
 
+/**
+ * Representa uma requisição de afinidade.
+ * 
+ * @author hugo
+ */
 public record AfinidadeRequest(
 	@NotBlank String regiao,
 	@NotEmpty List<EstadosEnum> estados

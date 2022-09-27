@@ -5,6 +5,11 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Representa uma requisição de score.
+ * 
+ * @author hugo
+ */
 public record ScoreRequest(
 	@NotBlank String scoreDescricao,
 	@NotNull @JsonProperty("inicial") int inicialScore,
